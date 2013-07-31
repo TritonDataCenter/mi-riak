@@ -26,17 +26,6 @@ if [ -f /opt/local/etc/sudoers ]; then
   chmod 0440 /opt/local/etc/sudoers
 fi
 
-# Add placeholders to Riak config files
-cd /opt/local/etc/riak
-for I in vm.args app.config; do
-  mv ${I} ${I}.orig
-  sed -e "s/127.0.0.1/##PRIVATE_IP##/g" \
-      -e "s/^-setcookie riak/-setcookie ##RIAK_SECRET##/g" \
-      < ${I}.orig > ${I}
-  chmod 0644 ${I}
-  rm ${I}.orig
-done
-
 # Clean up
 echo "* Cleaning up."
 rm -rf /root/*
